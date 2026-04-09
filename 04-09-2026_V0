@@ -1,0 +1,362 @@
+{#-# SHORTCODE VARIABLES #-#}
+
+{% set updatedAt = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" key="date" prior="1 day"]') %}
+{% set realTimeClose = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" key="close" prior="1 day"]') %}
+{% set stockName = do_shortcode_twig('[eod_fundamentals stock="' ~ stock_code ~ '" key="name"]') %}
+{% set latestClosePrice = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" prior="2 days" key="close" ]') %}
+{% set latestCloseDate = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" prior="2 days" key="date" ]') %}
+{% set currencySymbol = do_shortcode_twig('[eod_fundamentals stock="' ~ stock_code ~ '" key="currencySymbol"]') %}
+{% set increase = '<svg class="luna-icon luna-icon--success"><use xlink:href="#arrow-up"></use></svg>' %}
+{% set decrease = '<svg class="luna-icon luna-icon--error"><use xlink:href="#arrow-down"></use></svg>' %}
+
+{% set unixNow = "now"|date("U") %}
+
+{#-# Set dates to prior times #-#}
+{% set weekPrior1 = unixNow|date_modify("-1 week") %}
+{% set monthPrior1 = unixNow|date_modify("-1 month") %}
+{% set monthPrior3 = unixNow|date_modify("-3 months") %}
+{% set monthPrior6 = unixNow|date_modify("-6 months") %}
+{% set yearPrior1 = unixNow|date_modify("-1 year") %}
+{% set yearPrior2 = unixNow|date_modify("-2 year") %}
+{% set yearPrior3 = unixNow|date_modify("-3 year") %}
+{% set yearPrior5 = unixNow|date_modify("-5 year") %}
+
+{#-# Set dates to a prior day if returns N/A #-#}
+{% set closeWeekPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ weekPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeWeekPrior1 == 'N/A') %}
+{% set weekPrior1 = weekPrior1|date_modify("-1 day") %}
+{% set closeWeekPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ weekPrior1 | date("Y-m-d") ~ '" key="close"]') -%}
+{% if (closeWeekPrior1 == 'N/A') %}
+{% set weekPrior1 = weekPrior1|date_modify("-1 day") %}
+{% set closeWeekPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ weekPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeWeekPrior1 == 'N/A') %}
+{%- set weekPrior1 = weekPrior1|date_modify("-1 day") %}
+{% set closeWeekPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ weekPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeWeekPrior1 == 'N/A') %}
+{%- set weekPrior1 = weekPrior1|date_modify("-1 day") %}
+{% set closeWeekPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ weekPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% set closeMonthPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeMonthPrior1 == 'N/A') %}
+{% set monthPrior1 = monthPrior1|date_modify("-1 day") %}
+{% set closeMonthPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior1 | date("Y-m-d") ~ '" key="close"]') -%}
+{% if (closeMonthPrior1 == 'N/A') %}
+{% set monthPrior1 = monthPrior1|date_modify("-1 day") %}
+{% set closeMonthPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeMonthPrior1 == 'N/A') %}
+{%- set monthPrior1 = monthPrior1|date_modify("-1 day") %}
+{% set closeMonthPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeMonthPrior1 == 'N/A') %}
+{%- set monthPrior1 = monthPrior1|date_modify("-1 day") %}
+{% set closeMonthPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% set closeMonthPrior3 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior3 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeMonthPrior3 == 'N/A') %}
+{% set monthPrior3 = monthPrior3|date_modify("-1 day") %}
+{% set closeMonthPrior3 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior3 | date("Y-m-d") ~ '" key="close"]') -%}
+{% if (closeMonthPrior3 == 'N/A') %}
+{% set monthPrior3 = monthPrior3|date_modify("-1 day") %}
+{% set closeMonthPrior3 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior3 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeMonthPrior3 == 'N/A') %}
+{% set monthPrior3 = monthPrior3|date_modify("-1 day") %}
+{% set closeMonthPrior3 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior3 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeMonthPrior3 == 'N/A') %}
+{% set monthPrior3 = monthPrior3|date_modify("-1 day") %}
+{% set closeMonthPrior3 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior3 | date("Y-m-d") ~ '" key="close"]') %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% set closeMonthPrior6 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior6 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeMonthPrior6 == 'N/A') %}
+{% set monthPrior6 = monthPrior6|date_modify("-1 day") %}
+{% set closeMonthPrior6 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior6 | date("Y-m-d") ~ '" key="close"]') -%}
+{% if (closeMonthPrior6 == 'N/A') %}
+{% set monthPrior6 = monthPrior6|date_modify("-1 day") %}
+{% set closeMonthPrior6 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior6 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeMonthPrior6 == 'N/A') %}
+{%- set monthPrior6 = monthPrior6|date_modify("-1 day") %}
+{% set closeMonthPrior6 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior6 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeMonthPrior6 == 'N/A') %}
+{% set monthPrior6 = monthPrior6|date_modify("-1 day") %}
+{% set closeMonthPrior6 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ monthPrior6 | date("Y-m-d") ~ '" key="close"]') %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% set closeYearPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeYearPrior1 == 'N/A') %}
+{% set yearPrior1 = yearPrior1|date_modify("-1 day") %}
+{% set closeYearPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior1 | date("Y-m-d") ~ '" key="close"]') -%}
+{% if (closeYearPrior1 == 'N/A') %}
+{% set yearPrior1 = yearPrior1|date_modify("-1 day") %}
+{% set closeYearPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeYearPrior1 == 'N/A') %}
+{% set yearPrior1 = yearPrior1|date_modify("-1 day") %}
+{% set closeYearPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% if (closeYearPrior1 == 'N/A') %}
+{% set yearPrior1 = yearPrior1|date_modify("-1 day") %}
+{% set closeYearPrior1 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior1 | date("Y-m-d") ~ '" key="close"]') %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% set closeYearPrior2 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior2 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% if (closeYearPrior2 == 'N/A') %}
+{% set yearPrior2 = yearPrior2|date_modify("-1 day") %}
+{% set closeYearPrior2 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior2 | date("Y-m-d") ~ '" key="adjusted_close"]') -%}
+{% if (closeYearPrior2 == 'N/A') %}
+{% set yearPrior2 = yearPrior2|date_modify("-1 day") %}
+{% set closeYearPrior2 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior2 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% if (closeYearPrior2 == 'N/A') %}
+{% set yearPrior2 = yearPrior2|date_modify("-1 day") %}
+{% set closeYearPrior2 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior2 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% if (closeYearPrior2 == 'N/A') %}
+{% set yearPrior2 = yearPrior2|date_modify("-1 day") %}
+{% set closeYearPrior2 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior2 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% set closeYearPrior3 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior3 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% if (closeYearPrior3 == 'N/A') %}
+{% set yearPrior3 = yearPrior3|date_modify("-1 day") %}
+{% set closeYearPrior3 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior3 | date("Y-m-d") ~ '" key="adjusted_close"]') -%}
+{% if (closeYearPrior3 == 'N/A') %}
+{% set yearPrior3 = yearPrior3|date_modify("-1 day") %}
+{% set closeYearPrior3 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior3 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% if (closeYearPrior3 == 'N/A') %}
+{% set yearPrior3 = yearPrior3|date_modify("-1 day") %}
+{% set closeYearPrior3 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior3 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% if (closeYearPrior3 == 'N/A') %}
+{% set yearPrior3 = yearPrior3|date_modify("-1 day") %}
+{% set closeYearPrior3 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior3 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% set closeYearPrior5 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior5 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% if (closeYearPrior5 == 'N/A') %}
+{% set yearPrior5 = yearPrior5|date_modify("-1 day") %}
+{% set closeYearPrior5 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior5 | date("Y-m-d") ~ '" key="adjusted_close"]') -%}
+{% if (closeYearPrior5 == 'N/A') %}
+{% set yearPrior5 = yearPrior5|date_modify("-1 day") %}
+{% set closeYearPrior5 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior5 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% if (closeYearPrior5 == 'N/A') %}
+{%- set yearPrior5 = yearPrior5|date_modify("-1 day") %}
+{% set closeYearPrior5 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior5 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% if (closeYearPrior5 == 'N/A') %}
+{%- set yearPrior5 = yearPrior5|date_modify("-1 day") %}
+{% set closeYearPrior5 = do_shortcode_twig('[eod_historical stock="' ~ stock_code ~ '" date="' ~ yearPrior5 | date("Y-m-d") ~ '" key="adjusted_close"]') %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+
+
+
+
+{#-# LOGIC #-#}
+
+{% if (impexp_cleanname is defined) and (impexp_cleanname != '') %}
+{% set stockFriendlyName = impexp_cleanname %}
+{% else %}
+{% set stockFriendlyName = stockName|clean_company_name %}
+{% endif %}
+
+{% if impexp_realtime == true %}
+{% set closePrice = realTimeClose %}
+{% else %}
+{% set closePrice = latestClosePrice %}
+{% endif %}
+
+{#-# Set % difference from live close to prior close #-#}
+{% if closeWeekPrior1 != 'N/A' %}
+{% if ( closePrice > closeWeekPrior1) %}
+{% set closeWeekPrior1 = ((closePrice - closeWeekPrior1) / closeWeekPrior1) * 100 %}
+{% set closeWeekPrior1 = increase ~ closeWeekPrior1|number_format(2) ~ '%' %}
+{% elseif ( closePrice < closeWeekPrior1 ) %}
+{% set closeWeekPrior1 = ((closePrice - closeWeekPrior1) / closeWeekPrior1) * 100 %}
+{% if closeWeekPrior1|number_format(2) != 'inf' %}
+{% set closeWeekPrior1 = decrease ~ closeWeekPrior1|number_format(2) ~ '%' %}
+{% else %}
+{% set closeWeekPrior1 = 'N/A' %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if closeMonthPrior1 != 'N/A' %}
+{% if ( closePrice > closeMonthPrior1 ) %}
+{% set closeMonthPrior1 = ((closePrice - closeMonthPrior1) / closeMonthPrior1) * 100 %}
+{% set closeMonthPrior1 = increase ~ closeMonthPrior1|number_format(2) ~ '%' %}
+{% elseif ( closePrice < closeMonthPrior1 ) %}
+{% set closeMonthPrior1 = ((closePrice - closeMonthPrior1) / closeMonthPrior1) * 100 %}
+{% if closeMonthPrior1|number_format(2) != 'inf' %}
+{% set closeMonthPrior1 = decrease ~ closeMonthPrior1|number_format(2) ~ '%' %}
+{% else %}
+{% set closeMonthPrior1 = 'N/A' %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if closeMonthPrior3 != 'N/A' %}
+{%- if ( closePrice > closeMonthPrior3 ) -%}
+{% set closeMonthPrior3 = ((closePrice - closeMonthPrior3) / closeMonthPrior3) * 100 %}
+{% set closeMonthPrior3 = increase ~ closeMonthPrior3|number_format(2) ~ '%' %}
+{%- elseif ( closePrice < closeMonthPrior3 ) -%}
+{% set closeMonthPrior3 = ((closePrice - closeMonthPrior3) / closeMonthPrior3) * 100 %}
+{% if closeMonthPrior3|number_format(2) != 'inf' %}
+{% set closeMonthPrior3 = decrease ~ closeMonthPrior3|number_format(2) ~ '%' %}
+{% else %}
+{% set closeMonthPrior3 = 'N/A' %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if closeMonthPrior6 != 'N/A' %}
+{% if ( closePrice > closeMonthPrior6 ) %}
+{% set closeMonthPrior6 = ((closePrice - closeMonthPrior6) / closeMonthPrior6) * 100 %}
+{% set closeMonthPrior6 = increase ~ closeMonthPrior6|number_format(2) ~ '%' %}
+{% elseif ( closePrice < closeMonthPrior6 ) %}
+{% set closeMonthPrior6 = ((closePrice - closeMonthPrior6) / closeMonthPrior6) * 100 %}
+{% if closeMonthPrior6|number_format(2) != 'inf' %}
+{% set closeMonthPrior6 = decrease ~ closeMonthPrior6|number_format(2) ~ '%' %}
+{% else %}
+{% set closeMonthPrior6 = 'N/A' %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if closeYearPrior1 != 'N/A' %}
+{% if ( closePrice > closeYearPrior1 ) %}
+{% set closeYearPrior1 = ((closePrice - closeYearPrior1) / closeYearPrior1) * 100 %}
+{% set closeYearPrior1 = increase ~ closeYearPrior1|number_format(2) ~ '%' %}
+{% elseif ( closePrice < closeYearPrior1 ) %}
+{% set closeYearPrior1 = ((closePrice - closeYearPrior1) / closeYearPrior1) * 100 %}
+{% if closeYearPrior1|number_format(2) != 'inf' %}
+{% set closeYearPrior1 = decrease ~ closeYearPrior1|number_format(2) ~ '%' %}
+{% else %}
+{% set closeYearPrior1 = 'N/A' %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if closeYearPrior2 != 'N/A' %}
+{% if ( closePrice > closeYearPrior2 ) %}
+{% set closeYearPrior2 = ((closePrice - closeYearPrior2) / closeYearPrior2) * 100 %}
+{% set closeYearPrior2 = increase ~ closeYearPrior2|number_format(2) ~ '%' %}
+{% elseif ( closePrice < closeYearPrior2 ) %}
+{% set closeYearPrior2 = ((closePrice - closeYearPrior2) / closeYearPrior2) * 100 %}
+{% if closeYearPrior2|number_format(2) != 'inf' %}
+{% set closeYearPrior2 = decrease ~ closeYearPrior2|number_format(2) ~ '%' %}
+{% else %}
+{% set closeYearPrior2 = 'N/A' %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if closePrice != 'N/A' and closeYearPrior3 != 'N/A' %}
+{% if ( closePrice > closeYearPrior3 ) %}
+{% set closeYearPrior3 = ((closePrice - closeYearPrior3) / closeYearPrior3) * 100 %}
+{% set closeYearPrior3 = increase ~ closeYearPrior3|number_format(2) ~ '%' %}
+{% elseif ( closePrice matches '/^\d+$/' and closeYearPrior3 matches '/^\d+$/' and  closePrice < closeYearPrior3 ) %}
+{% set closeYearPrior3 = ((closePrice - closeYearPrior3) / closeYearPrior3) * 100 %}
+{% if closeYearPrior3|number_format(2) != 'inf' %}
+{% set closeYearPrior3 = decrease ~ closeYearPrior3|number_format(2) ~ '%' %}
+{% else %}
+{% set closeYearPrior3 = 'N/A' %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if closePrice != 'N/A' and closeYearPrior5 != 'N/A' %}
+{% if ( closePrice > closeYearPrior5 ) %}
+{% set closeYearPrior5 = ((closePrice - closeYearPrior5) / closeYearPrior5) * 100 %}
+{% set closeYearPrior5 = increase ~ closeYearPrior5|number_format(2) ~ '%' %}
+{% elseif ( closePrice matches '/^\d+$/' and closeYearPrior5 matches '/^\d+$/' and closePrice < closeYearPrior5 ) %}
+{% set closeYearPrior5 = ((closePrice - closeYearPrior5) / closeYearPrior5) * 100 %}
+{% if closeYearPrior5|number_format(2) != 'inf' %}
+{% set closeYearPrior5 = decrease ~ closeYearPrior5|number_format(2) ~ '%' %}
+{% else %}
+{% set closeYearPrior5 = 'N/A' %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+
+{#-# TEMPLATE #-#}
+
+{% if (latestCloseDate != 'N/A') %}
+
+<article class="luna-card luna-card--shadow">
+<div class="luna-card__block">
+
+<h3 id="performance" class="no-margin-bottom">{{ stockFriendlyName }} price performance over time</h3>
+<p class="fin-text-grey text-xx-small has-margin-bottom">Historical closes compared with the close of {{ closePrice | currency }} from {{ latestCloseDate }}</p>
+
+<div class="u-grid">
+<div class="u-grid__col u-1/2@s">
+<table class="luna-table luna-table--responsivelist">
+<thead class="luna-table__header"></thead>
+<tbody class="luna-table__body">
+<tr>
+<th class="u-3/5@s">1 week <span class="fin-text-grey">({{ weekPrior1 | date("Y-m-d") }})</span></th>
+<td>{{ closeWeekPrior1 }}</td>
+</tr>
+<tr>
+<th>1 month <span class="fin-text-grey">({{ monthPrior1 | date("Y-m-d") }})</span></th>
+<td>{{ closeMonthPrior1 }}</td>
+</tr>
+<tr>
+<th>3 months <span class="fin-text-grey">({{ monthPrior3 | date("Y-m-d") }})</span></th>
+<td>{{ closeMonthPrior3 }}</td>
+</tr>
+<tr>
+<th>6 months <span class="fin-text-grey">({{ monthPrior6 | date("Y-m-d") }})</span></th>
+<td>{{ closeMonthPrior6 }}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="u-grid__col u-1/2@s">
+<table class="luna-table luna-table--responsivelist">
+<thead class="luna-table__header"></thead>
+<tbody class="luna-table__body">
+<tr>
+<th class="u-3/5@s">1 year <span class="fin-text-grey">({{ yearPrior1 | date("Y-m-d") }})</span></th>
+<td>{{ closeYearPrior1 }}</td>
+</tr>
+<tr>
+<th>2 years <span class="fin-text-grey">({{ yearPrior2 | date("Y-m-d") }})</span></th>
+<td>{{ closeYearPrior2 }}</td>
+</tr>
+<tr>
+<th>3 years <span class="fin-text-grey">({{ yearPrior3 | date("Y-m-d") }})</span></th>
+<td>{{ closeYearPrior3 }}</td>
+</tr>
+<tr>
+<th>5 years <span class="fin-text-grey">({{ yearPrior5 | date("Y-m-d") }})</span></th>
+<td>{{ closeYearPrior5 }}</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</article>
+{% endif %}
